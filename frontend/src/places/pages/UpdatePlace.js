@@ -7,6 +7,7 @@ import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
 } from "../../shared/util/validators";
+import "./PlaceForm.css";
 
 const DUMMY_PLACES = [
   {
@@ -51,7 +52,7 @@ const UpdatePlace = () => {
   }
 
   return (
-    <form>
+    <form className="place-form">
       <Input
         id="title"
         element="input"
@@ -74,7 +75,9 @@ const UpdatePlace = () => {
         value={identifiedPlace.description}
         valid={true}
       />
-      <Button type="submit" disabled={true}>UPDATE PLACE</Button>
+      <Button type="submit" disabled={true}>
+        UPDATE PLACE
+      </Button>
     </form>
   );
 };
