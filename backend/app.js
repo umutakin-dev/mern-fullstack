@@ -28,6 +28,9 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(process.env.MONGODB_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => app.listen(5000))
   .catch((error) => console.log(error));

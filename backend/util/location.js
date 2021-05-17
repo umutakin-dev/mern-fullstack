@@ -7,8 +7,6 @@ require("dotenv").config();
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
 const getCoordsForAddress = async (address) => {
-  console.log(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_API_KEY}`);
-
   const response = await axios.get(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
