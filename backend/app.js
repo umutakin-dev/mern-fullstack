@@ -27,10 +27,12 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occured!" });
 });
 
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
+
 mongoose
-  .connect(process.env.MONGODB_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
+  .connect(process.env.MONGODB_URL)
   .then(() => app.listen(5000))
   .catch((error) => console.log(error));

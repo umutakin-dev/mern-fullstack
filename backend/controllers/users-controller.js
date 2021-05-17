@@ -1,7 +1,8 @@
-const uuid = require("uuid");
+const uuid = require("uuid").v4;
 const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
+const User = require("../models/user");
 
 const DUMMY_USERS = [
   {
@@ -16,7 +17,7 @@ const getUsers = (req, res, next) => {
   res.json({ users: DUMMY_USERS });
 };
 
-const signup = (req, res, next) => {
+const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -24,25 +25,42 @@ const signup = (req, res, next) => {
     );
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, places } = req.body;
 
-  const hasUser = DUMMY_USERS.find((user) => user.email === email);
-  if (hasUser) {
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (error) {
     return next(
-      new HttpError("could not create user, user already exists", 422)
+      new HttpError(
+        "something went wrong, signup failed, please try again",
+        500
+      )
     );
   }
 
-  const createdUser = {
-    id: uuid.v4(),
+  if (existingUser) {
+    return next(
+      new HttpError("user exists already, please login instead.", 422)
+    );
+  }
+
+  const createdUser = new User({
     name,
     email,
+    image:
+      "https://img1.wikia.nocookie.net/__cb20110928212942/warhammer40k/images/a/aa/Necron_Lord_&_Warriors.jpg",
     password,
-  };
+    places,
+  });
 
-  DUMMY_USERS.push(createdUser);
+  try {
+    await createdUser.save();
+  } catch (error) {
+    return next(new HttpError("sign up failed, please try again.", 500));
+  }
 
-  res.status(201).json({ user: createdUser });
+  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
 const login = (req, res, next) => {
