@@ -4,15 +4,6 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
-const DUMMY_USERS = [
-  {
-    id: "u1",
-    name: "umut akin",
-    email: "asd@asd.com",
-    password: "test1234",
-  },
-];
-
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -31,7 +22,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -52,7 +43,7 @@ const signup = async (req, res, next) => {
     image:
       "https://img1.wikia.nocookie.net/__cb20110928212942/warhammer40k/images/a/aa/Necron_Lord_&_Warriors.jpg",
     password,
-    places,
+    places: [],
   });
 
   try {
