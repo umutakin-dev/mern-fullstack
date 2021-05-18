@@ -92,7 +92,7 @@ const Auth = () => {
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/signup",
           "POST",
-          formData
+        formData
         );
 
         auth.login(responseData.user.id);

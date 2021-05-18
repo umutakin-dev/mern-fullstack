@@ -39,8 +39,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image:
-      "https://img1.wikia.nocookie.net/__cb20110928212942/warhammer40k/images/a/aa/Necron_Lord_&_Warriors.jpg",
+    image: req.file.path,
     password,
     places: [],
   });
